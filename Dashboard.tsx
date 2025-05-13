@@ -71,12 +71,15 @@ const questions = {
   ],
 };
 
-const initialAnswers = Object.keys(questions).reduce((acc, section) => {
-  questions[section].forEach((q) => {
-    acc[q.id] = "";
-  });
-  return acc;
-}, {} as Record<string, any>);
+const initialAnswers = Object.entries(questions).reduce(
+  (acc, [section, list]) => {
+    list.forEach((q) => {
+      acc[q.id] = "";
+    });
+    return acc;
+  },
+  {} as Record<string, string>
+);
 
 const Dashboard = () => {
   const [answers, setAnswers] = useState(initialAnswers);
