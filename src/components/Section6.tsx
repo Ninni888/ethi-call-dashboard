@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section6: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,38 +19,39 @@ const Section6: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "La comunicazione aziendale è trasparente e rispecchia i valori dichiarati?",
-      note: "Un’impresa che si professa 'green' o 'inclusiva' deve dimostrarlo con coerenza nei messaggi e nei comportamenti.",
+        "La comunicazione aziendale è trasparente, coerente e rispettosa degli stakeholder?",
+      note: "Valuta la capacità dell’azienda di comunicare ciò che è realmente, evitando eccessi narrativi e messaggi fuorvianti.",
       verifiche:
-        "Analisi della coerenza tra dichiarazioni pubbliche e attività aziendali effettive.",
+        "Verificare se la comunicazione istituzionale riflette comportamenti concreti e se i messaggi pubblicitari sono rispettosi e inclusivi.",
       indicatori:
-        "Presenza di un codice di comunicazione etica; tono coerente tra sito, brochure, comunicazioni social.",
+        "Allineamento tra valori dichiarati e narrazione, tono di voce autentico, presenza di policy comunicazione responsabile.",
     },
     {
       id: "q2",
-      domanda: "L’azienda evita pratiche di greenwashing o purpose washing?",
-      note: "Il greenwashing consiste nell’enfatizzare pratiche 'verdi' solo a scopo d’immagine senza un reale impegno.",
+      domanda:
+        "Sono evitati fenomeni di greenwashing, pinkwashing o purpose-washing?",
+      note: "La domanda verifica la presenza di meccanismi di autocontrollo per evitare l’uso strumentale di tematiche etiche o ambientali.",
       verifiche:
-        "Coerenza tra dichiarazioni pubbliche e dati reali sugli impatti ambientali o sociali.",
+        "Verificare se le affermazioni etiche o ESG sono documentate e supportate da dati verificabili.",
       indicatori:
-        "Dati ambientali/sociali verificabili e pubblicati; rating ESG pubblici o validati.",
+        "Presenza di fact-check interni, documenti di sostenibilità, revisioni di contenuti prima della pubblicazione.",
     },
     {
       id: "q3",
       domanda:
-        "Le campagne pubblicitarie e di marketing promuovono linguaggi e immagini rispettose e inclusive?",
-      note: "Il linguaggio inclusivo evita immagini stereotipate o discriminatorie e promuove un messaggio universale.",
+        "Il marketing promuove una cultura del rispetto, dell’inclusione e dell’impatto positivo?",
+      note: "La domanda misura l’impegno dell’azienda a influenzare positivamente la società attraverso i propri canali.",
       verifiche:
-        "Analisi del linguaggio e delle immagini usate nei materiali promozionali.",
+        "Verificare se le campagne promuovono valori etici, rappresentazioni inclusive, collaborazioni con realtà valoriali.",
       indicatori:
-        "Assenza di stereotipi di genere, etnia, età; presenza di rappresentazioni rispettose e diversificate.",
+        "Campagne con impatto sociale, collaborazioni con ONG o enti educativi, KPI etici associati al marketing.",
     },
   ];
 
@@ -75,11 +76,12 @@ const Section6: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -87,12 +89,36 @@ const Section6: React.FC<SectionProps> = ({ onComplete }) => {
         className="text-3xl font-extrabold mb-6 text-center"
         style={{ color: "#b69624" }}
       >
-        Sezione 6 – Etica della comunicazione e del marketing
+        Sezione 6 – Etica della Comunicazione e del Marketing
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Valutare la coerenza tra comunicazione e realtà aziendale, la
+          responsabilità sociale del marketing e la capacità di promuovere una
+          cultura inclusiva, autentica e trasparente.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          L’etica della comunicazione rappresenta un elemento strategico per
+          costruire fiducia e reputazione duratura con tutti gli stakeholder.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

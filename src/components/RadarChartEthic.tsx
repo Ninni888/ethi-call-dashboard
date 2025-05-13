@@ -14,13 +14,13 @@ interface RadarChartEthicProps {
 
 const RadarChartEthic: React.FC<RadarChartEthicProps> = ({ data }) => {
   const sectionLabels = [
-    "1. Responsabilità etica",
-    "2. Diritti universali",
-    "3. Diritti dei lavoratori",
-    "4. Ambiente",
-    "5. Famiglia scelta",
-    "6. Comunicazione etica",
-    "7. Innovazione etica",
+    "Responsabilità etica",
+    "Diritti universali",
+    "Diritti dei lavoratori",
+    "Ambiente",
+    "Famiglia scelta",
+    "Comunicazione etica",
+    "Innovazione etica",
   ];
 
   const labeledData = data.map((entry, index) => ({

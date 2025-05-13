@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section3: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,39 +19,39 @@ const Section3: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "Esistono politiche o pratiche per garantire condizioni di lavoro eque, sicure e dignitose?",
-      note: "L’etica aziendale inizia dalla garanzia di un contesto sicuro e dignitoso.",
+        "L’azienda tutela il benessere psicofisico dei propri lavoratori attraverso misure strutturate e continuative?",
+      note: "Si fa riferimento a politiche interne che vanno oltre l’obbligo normativo e promuovono ambienti di lavoro sani e sostenibili.",
       verifiche:
-        "Verificare l’esistenza di politiche aziendali per la salute, la sicurezza e l’equilibrio tra vita e lavoro.",
+        "Verificare l’esistenza di programmi per il benessere, supporto psicologico, flessibilità, ergonomia, welfare integrato.",
       indicatori:
-        "Politica di salute e sicurezza accessibile e aggiornata; iniziative a favore del benessere psico-fisico.",
+        "Piani welfare attivi, survey sul clima aziendale, iniziative di ascolto e prevenzione, benefit per salute mentale/fisica.",
     },
     {
       id: "q2",
       domanda:
-        "Esistono strumenti per raccogliere e monitorare il benessere dei lavoratori e il clima aziendale?",
-      note: "Ascoltare il clima aziendale, i livelli di stress e di soddisfazione interna è un atto etico e strategico.",
+        "L’azienda favorisce la partecipazione attiva dei lavoratori nei processi decisionali e nella vita aziendale?",
+      note: "Riguarda il coinvolgimento dei dipendenti come soggetti attivi e portatori di valore nei processi organizzativi.",
       verifiche:
-        "Verificare se esistono pratiche sistematiche per l’ascolto dei dipendenti.",
+        "Verificare se esistono strumenti strutturati di ascolto, team interfunzionali, momenti di confronto regolari.",
       indicatori:
-        "Presenza di sondaggi, sportelli d’ascolto, verbali o altri strumenti di rilevazione interna.",
+        "Riunioni periodiche, gruppi di lavoro misti, sondaggi interni, risposta strutturata ai feedback dei lavoratori.",
     },
     {
       id: "q3",
       domanda:
-        "L’azienda promuove attivamente il principio del rispetto e della non discriminazione?",
-      note: "Il rispetto della dignità individuale è il fondamento della giustizia organizzativa.",
+        "L’impresa garantisce pari opportunità e sostiene la crescita professionale di tutte le categorie di lavoratori?",
+      note: "Questa domanda riguarda l’equità retributiva, le politiche di valorizzazione del talento, il contrasto al gender gap.",
       verifiche:
-        "Verificare l’esistenza di politiche formali di inclusione e non discriminazione.",
+        "Verificare esistenza di piani di carriera trasparenti, formazione inclusiva, indicatori di equità nelle promozioni.",
       indicatori:
-        "Politica inclusiva, iniziative di sensibilizzazione, canali interni per segnalare violazioni.",
+        "Analisi retributiva disaggregata, numero di donne in posizioni apicali, percorsi formativi accessibili.",
     },
   ];
 
@@ -76,11 +76,12 @@ const Section3: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -88,12 +89,36 @@ const Section3: React.FC<SectionProps> = ({ onComplete }) => {
         className="text-3xl font-extrabold mb-6 text-center"
         style={{ color: "#b69624" }}
       >
-        Sezione 3 – Rispetto e tutela dei diritti dei lavoratori
+        Sezione 3 – Diritti dei lavoratori
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Valutare l’impegno dell’impresa nella tutela dei diritti dei
+          lavoratori, promuovendo benessere, partecipazione e pari opportunità.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Le risposte fornite consentiranno di individuare eventuali rischi o
+          carenze nella gestione delle risorse umane, e potranno ispirare azioni
+          correttive concrete e sostenibili.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

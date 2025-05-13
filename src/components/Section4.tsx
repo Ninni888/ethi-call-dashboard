@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section4: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,39 +19,39 @@ const Section4: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "Il rispetto nei confronti dell’ambiente è uno dei valori fondanti dell’azienda?",
-      note: "Il rispetto dell’ambiente deve essere parte integrante della cultura organizzativa e non un’aggiunta esterna.",
+        "L’azienda misura e monitora costantemente il proprio impatto ambientale?",
+      note: "Questa domanda riguarda la capacità dell’azienda di misurare consumi, emissioni e sprechi, con strumenti strutturati e documentabili.",
       verifiche:
-        "Presenza di riferimenti ambientali nel Codice Etico, nella Carta dei Valori o in altri documenti ufficiali.",
+        "Verificare la presenza di sistemi di misurazione (es. carbon footprint, indicatori ambientali, bilanci ambientali).",
       indicatori:
-        "L’ambiente è citato nei documenti valoriali ufficiali come parte della mission aziendale.",
+        "Monitoraggi periodici, report ambientali, tool di calcolo, certificazioni ambientali volontarie.",
     },
     {
       id: "q2",
       domanda:
-        "L’azienda si impegna a ridurre l’impatto ambientale delle proprie attività?",
-      note: "La conformità alle normative è solo il punto di partenza: serve un impegno strutturato e documentabile.",
+        "Sono attive politiche aziendali per la riduzione dell’impatto ambientale?",
+      note: "Riguarda l’effettiva implementazione di misure concrete per ridurre consumi, sprechi, emissioni e per favorire la transizione ecologica.",
       verifiche:
-        "Presenza di procedure per la gestione ambientale, audit ambientali, strumenti di monitoraggio.",
+        "Verificare se esistono policy di efficientamento, piani energetici, gestione rifiuti, utilizzo materiali sostenibili.",
       indicatori:
-        "Esistenza di una politica ambientale formalizzata e accessibile.",
+        "Adozione energie rinnovabili, riduzione carta/plastica, certificazioni ISO 14001 o EMAS, gestione ciclo di vita prodotto.",
     },
     {
       id: "q3",
       domanda:
-        "Promuove la riduzione dei rifiuti attraverso il riciclo e l’economia circolare?",
-      note: "L’economia circolare è un pilastro dell’etica ambientale. La gestione dei rifiuti va oltre la raccolta differenziata.",
+        "L’azienda promuove la sensibilizzazione ambientale interna ed esterna?",
+      note: "Questa domanda valuta l’impegno culturale e formativo dell’impresa sul tema ambientale, verso dipendenti e stakeholder.",
       verifiche:
-        "Presenza di pratiche strutturate per la gestione e tracciabilità dei rifiuti.",
+        "Verificare presenza di iniziative interne, eventi, campagne educative, partnership con realtà green.",
       indicatori:
-        "Piano aziendale per il riuso, la raccolta differenziata, l’uso di materiali riciclati.",
+        "Piani formativi, campagne social, eventi aziendali su temi ambientali, partecipazione a reti o progetti territoriali.",
     },
   ];
 
@@ -76,11 +76,12 @@ const Section4: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -91,9 +92,34 @@ const Section4: React.FC<SectionProps> = ({ onComplete }) => {
         Sezione 4 – Rispetto per l’ambiente
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Valutare la capacità dell’impresa di ridurre il proprio impatto
+          ambientale attraverso misurazioni, politiche interne e iniziative di
+          sensibilizzazione.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Questa sezione contribuisce a individuare azioni prioritarie per
+          integrare i criteri ambientali nelle strategie aziendali e nelle
+          relazioni con gli stakeholder.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

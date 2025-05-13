@@ -13,8 +13,18 @@ const FinalPage: React.FC<FinalPageProps> = ({ scores, notes, onRestart }) => {
   const totalScore = Object.values(scores).reduce((acc, curr) => acc + curr, 0);
   const averageScore = totalScore / 7;
 
+  const sectionTitles: { [key: string]: string } = {
+    "Sezione 1": "Responsabilità etica",
+    "Sezione 2": "Diritti universali",
+    "Sezione 3": "Diritti dei lavoratori",
+    "Sezione 4": "Ambiente",
+    "Sezione 5": "Famiglia scelta",
+    "Sezione 6": "Comunicazione etica",
+    "Sezione 7": "Innovazione etica",
+  };
+
   const radarData = Object.entries(scores).map(([section, score]) => ({
-    section,
+    section: `${section} – ${sectionTitles[section]}`,
     score,
   }));
 
@@ -28,67 +38,64 @@ const FinalPage: React.FC<FinalPageProps> = ({ scores, notes, onRestart }) => {
   const level = getLevel(averageScore * 10);
 
   const exportPDF = async () => {
-    const input = document.getElementById("pdfContent");
+    const pageOne = document.getElementById("pageOne");
+    const pageTwo = document.getElementById("pageTwo");
 
-    if (input) {
-      const buttons = document.getElementById("buttonsContainer");
-      if (buttons) buttons.style.display = "none";
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
 
-      const canvas = await html2canvas(input, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
+    if (pageOne && pageTwo) {
+      const canvas1 = await html2canvas(pageOne, { scale: 2 });
+      const imgData1 = canvas1.toDataURL("image/png");
+      const width = 210;
+      const height1 = (canvas1.height * width) / canvas1.width;
+      pdf.addImage(imgData1, "PNG", 0, 0, width, height1);
 
-      const marginLeft = 120;
+      pdf.addPage();
 
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: [canvas.width + marginLeft + 40, canvas.height + 200],
-      });
+      const canvas2 = await html2canvas(pageTwo, { scale: 2 });
+      const imgData2 = canvas2.toDataURL("image/png");
+      const height2 = (canvas2.height * width) / canvas2.width;
+      pdf.addImage(imgData2, "PNG", 0, 0, width, height2);
 
-      pdf.addImage(imgData, "PNG", marginLeft, 40, canvas.width, canvas.height);
       pdf.save(
         `risultati-eticaimprese-${new Date().toISOString().slice(0, 10)}.pdf`
       );
-
-      if (buttons) buttons.style.display = "flex";
     }
   };
 
   return (
-    <div
-      id="pdfContent"
-      style={{
-        padding: "2rem",
-        maxWidth: "960px",
-        margin: "0 auto",
-        boxSizing: "border-box",
-      }}
-    >
-      {/* Logo */}
-      <div className="flex justify-center mb-6">
+    <div id="pdfContent">
+      <div
+        id="pageOne"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "2rem",
+          boxSizing: "border-box",
+        }}
+      >
         <img
           src="/eticaimprese.svg"
           alt="Logo Eticaimprese"
-          style={{ width: "180px" }}
+          style={{ width: "400px", marginBottom: "2rem" }}
         />
-      </div>
-
-      {/* Titolo */}
-      <h1 className="text-3xl font-bold text-center mb-2">COMPLIMENTI!</h1>
-      <p className="text-center mb-4">Hai completato il percorso ETHI-Call.</p>
-
-      {/* Punteggio */}
-      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-center mb-2">COMPLIMENTI!</h1>
+        <p className="text-center mb-4 text-lg">
+          Hai completato il percorso ETHI-Call.
+        </p>
         <h2 className="text-2xl font-bold mb-2">
           Punteggio Medio: {(averageScore * 10).toFixed(1)}/100
         </h2>
-        <h3 className="text-xl font-bold" style={{ color: level.color }}>
+        <h3 className="text-xl font-bold mb-6" style={{ color: level.color }}>
           Livello Etico: {level.text}
         </h3>
-      </div>
-
-      {/* Badge livello etico */}
-      <div className="flex justify-center mt-4">
         <div
           style={{
             backgroundColor: level.color,
@@ -102,141 +109,228 @@ const FinalPage: React.FC<FinalPageProps> = ({ scores, notes, onRestart }) => {
             fontWeight: "bold",
             fontSize: "16px",
             boxShadow: "0 0 12px rgba(0,0,0,0.2)",
+            marginBottom: "2rem",
           }}
         >
           {level.text}
         </div>
-      </div>
-
-      {/* Narrativa dinamica */}
-      <div className="mt-6 text-center text-lg text-gray-700">
-        {averageScore >= 9 && (
-          <p>
-            La tua organizzazione rappresenta un modello di coerenza e visione
-            etica. Continua a guidare il cambiamento, coinvolgendo i tuoi
-            stakeholder in un processo di contaminazione positiva.
-          </p>
-        )}
-        {averageScore >= 7.5 && averageScore < 9 && (
-          <p>
-            L’etica è chiaramente parte integrante del tuo business. Hai tutte
-            le basi per evolvere verso una leadership etica di riferimento,
-            espandendo il tuo impatto positivo.
-          </p>
-        )}
-        {averageScore >= 5 && averageScore < 7.5 && (
-          <p>
-            Hai intrapreso un percorso importante: alcune pratiche etiche sono
-            già presenti, ma c’è ancora margine per renderle sistemiche e
-            strategiche.
-          </p>
-        )}
-        {averageScore < 5 && (
-          <p>
-            Questo risultato non rappresenta un giudizio, ma un punto di
-            partenza. ETHI-Call può aiutarti a costruire una cultura etica
-            solida e orientata al futuro, migliorando la resilienza e la
-            reputazione dell’impresa.
-          </p>
-        )}
-      </div>
-
-      {/* Raccomandazioni operative */}
-      <div className="mt-10 space-y-2 text-gray-800 text-base">
-        <h4
-          className="text-xl font-bold text-center mb-2"
-          style={{ color: "#b69624" }}
+        <div
+          style={{
+            marginLeft: "2cm",
+            marginRight: "2cm",
+            marginTop: "2rem",
+            textAlign: "center",
+            color: "#374151",
+            fontSize: "1.125rem",
+            fontStyle: "italic",
+          }}
         >
-          Raccomandazioni personalizzate
-        </h4>
-        {averageScore < 5 && (
-          <ul className="list-disc list-inside">
-            <li>
-              Definisci una Carta dei Valori interna, condivisa e vissuta.
-            </li>
-            <li>
-              Nomina un referente per l’etica e avvia percorsi formativi base.
-            </li>
-            <li>
-              Effettua un’analisi etica con il supporto degli ETHI-Call Manager.
-            </li>
-          </ul>
-        )}
-        {averageScore >= 5 && averageScore < 7.5 && (
-          <ul className="list-disc list-inside">
-            <li>Formalizza procedure etiche nei processi chiave.</li>
-            <li>Comunica all’esterno il tuo impegno con trasparenza.</li>
-            <li>
-              Utilizza strumenti come il REF e l’ETO per mappare rischi e
-              opportunità.
-            </li>
-          </ul>
-        )}
-        {averageScore >= 7.5 && (
-          <ul className="list-disc list-inside">
-            <li>Coinvolgi la tua filiera in una logica di etica condivisa.</li>
-            <li>
-              Partecipa al network ETHI-Call per creare contaminazione positiva.
-            </li>
-            <li>
-              Considera la certificazione etica avanzata e il bilancio EP&L.
-            </li>
-          </ul>
-        )}
+          <p>
+            Questo non è un giudizio. Non è una certificazione. È un invito a
+            guardare dentro la propria organizzazione con coraggio e visione. Il
+            percorso ETHI-Call rappresenta uno strumento per trasformare i
+            valori dichiarati in leve concrete di vantaggio competitivo. Un modo
+            per individuare rischi prima che diventino criticità e per cogliere
+            opportunità prima che sfuggano. L’etica non è un fine, ma una forza.
+            Una strategia per imprese che vogliono restare umane, autentiche e
+            orientate al futuro.
+          </p>
+        </div>
+        <div style={{ height: "400px", width: "100%", marginTop: "3rem" }}>
+          <RadarChartEthic data={radarData} />
+        </div>
       </div>
 
-      {/* Radar Chart */}
-      <div className="flex justify-center mt-12" style={{ height: "400px" }}>
-        <RadarChartEthic data={radarData} />
-      </div>
+      <div
+        id="pageTwo"
+        style={{ padding: "2cm", fontSize: "18px", boxSizing: "border-box" }}
+      >
+        <div className="flex justify-center mb-6">
+          <img
+            src="/eticaimprese.svg"
+            alt="Logo Eticaimprese"
+            style={{ width: "220px" }}
+          />
+        </div>
 
-      {/* Risultati singole sezioni */}
-      <div className="space-y-8 mt-12">
-        {Object.entries(scores).map(([section, score]) => (
-          <div key={section}>
-            <div className="text-lg font-bold">
-              {section}: {Math.round(score * 10)}/100
-            </div>
-            {notes[section] && (
-              <div className="mt-2 text-gray-700">
-                <strong>Criticità rilevate:</strong>
-                <br />
-                {notes[section]}
-              </div>
+        <div className="mt-12 bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-md">
+          <h4 className="text-xl font-bold mb-4" style={{ color: "#b69624" }}>
+            📋 Principali aspetti da migliorare (per area)
+          </h4>
+          <ul className="list-disc list-inside text-gray-800 space-y-2">
+            {Object.entries(notes).map(([section, note]) =>
+              note ? (
+                <li key={section}>
+                  <strong>
+                    {section} – {sectionTitles[section]}:
+                  </strong>{" "}
+                  {note}
+                </li>
+              ) : null
             )}
-          </div>
-        ))}
-      </div>
+          </ul>
+        </div>
 
-      {/* Call to action */}
-      <div className="text-center mt-12 text-lg text-gray-800">
-        <p>
-          Vuoi approfondire il tuo percorso etico e trasformarlo in vantaggio
-          competitivo?
-          <br />
-          Contattaci all’indirizzo{" "}
-          <a
-            href="mailto:info@ethi-call.it"
-            style={{
-              color: "#b69624",
-              fontWeight: "bold",
-              textDecoration: "underline",
-            }}
+        <div className="mt-12">
+          <h4
+            className="text-xl font-bold text-center mb-4"
+            style={{ color: "#b69624" }}
           >
-            info@ethi-call.it
-          </a>
-        </p>
+            🛡 Risk Ethic Framework – Rischi Etici
+          </h4>
+          <ul
+            className="list-inside text-gray-800 space-y-2"
+            style={{ fontSize: "1.1rem" }}
+          >
+            <li>
+              <strong>⚠️ Rischio interno:</strong> Mancanza di un referente o
+              comitato etico attivo.
+            </li>
+            <li>
+              <strong>⚠️ Rischio esterno:</strong> Percezione incoerente dei
+              valori da parte degli stakeholder.
+            </li>
+            <li>
+              <strong>⚠️ Rischio interno:</strong> Assenza di strumenti di
+              ascolto strutturati per i collaboratori.
+            </li>
+            <li>
+              <strong>⚠️ Rischio interno:</strong> Inadeguata integrazione
+              dell’etica nella governance.
+            </li>
+            <li>
+              <strong>⚠️ Rischio esterno:</strong> Comunicazione potenzialmente
+              percepita come greenwashing.
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-12">
+          <h4
+            className="text-xl font-bold text-center mb-4"
+            style={{ color: "#b69624" }}
+          >
+            🌿 Ethic Template Opportunity – Opportunità Strategiche
+          </h4>
+          <ul
+            className="list-inside text-gray-800 space-y-2"
+            style={{ fontSize: "1.1rem" }}
+          >
+            <li>
+              <strong>✅ Valorizzare il capitale umano</strong> con percorsi di
+              ascolto e mentoring valoriale.
+            </li>
+            <li>
+              <strong>✅ Attivare una comunicazione trasparente</strong> e
+              coerente con la cultura interna.
+            </li>
+            <li>
+              <strong>✅ Utilizzare l’etica come leva distintiva</strong> per
+              l’innovazione e la competitività sostenibile.
+            </li>
+            <li>
+              <strong>✅ Creare una community valoriale</strong> coinvolgendo
+              fornitori e stakeholder nel modello ETHI-Call.
+            </li>
+            <li>
+              <strong>✅ Integrare strumenti come il bilancio EP&L</strong> per
+              misurare l’impatto etico-economico.
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-12 space-y-2 text-gray-800 text-base">
+          <h4
+            className="text-xl font-bold text-center mb-2"
+            style={{ color: "#b69624" }}
+          >
+            📌 Raccomandazioni personalizzate
+          </h4>
+
+          {averageScore < 5 && (
+            <ul className="list-disc list-inside">
+              <li>
+                Definisci una Carta dei Valori interna, condivisa e vissuta.
+              </li>
+              <li>
+                Nomina un referente per l’etica e avvia percorsi formativi base.
+              </li>
+              <li>
+                Effettua un’analisi etica con il supporto degli ETHI-Call
+                Manager.
+              </li>
+            </ul>
+          )}
+          {averageScore >= 5 && averageScore < 7.5 && (
+            <ul className="list-disc list-inside">
+              <li>Formalizza procedure etiche nei processi chiave.</li>
+              <li>Comunica all’esterno il tuo impegno con trasparenza.</li>
+              <li>
+                Utilizza strumenti come il REF e l’ETO per mappare rischi e
+                opportunità.
+              </li>
+            </ul>
+          )}
+          {averageScore >= 7.5 && (
+            <ul className="list-disc list-inside">
+              <li>
+                Coinvolgi la tua filiera in una logica di etica condivisa.
+              </li>
+              <li>
+                Partecipa al network ETHI-Call per creare contaminazione
+                positiva.
+              </li>
+              <li>
+                Considera la certificazione etica avanzata e il bilancio EP&L.
+              </li>
+            </ul>
+          )}
+
+          <div className="mt-8 text-base text-gray-800">
+            <h5 className="font-semibold mb-2">🎓 Formazione consigliata:</h5>
+            <ul className="list-disc list-inside">
+              <li>
+                Corso base su etica d’impresa e cultura della trasparenza.
+              </li>
+              <li>Formazione ESG per leadership e comitato etico interno.</li>
+              <li>
+                Laboratori pratici su comunicazione valoriale e linguaggio
+                inclusivo.
+              </li>
+              <li>
+                Workshop sull’uso strategico di REF e ETO nella pianificazione
+                aziendale.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="text-center mt-12 text-lg text-gray-800">
+          <p>
+            Vuoi approfondire il tuo percorso etico e trasformarlo in vantaggio
+            competitivo?
+            <br />
+            Contattaci all’indirizzo{" "}
+            <a
+              href="mailto:info@ethi-call.it"
+              style={{
+                color: "#b69624",
+                fontWeight: "bold",
+                textDecoration: "underline",
+              }}
+            >
+              info@ethi-call.it
+            </a>
+          </p>
+        </div>
+
+        <div style={{ height: "100px" }}></div>
+
+        <div className="text-center text-xs text-gray-400 mt-10">
+          Dashboard Eticaimprese © 2025 - Tutti i diritti riservati
+        </div>
       </div>
 
-      {/* Margine vuoto grande */}
-      <div style={{ height: "100px" }}></div>
-
-      {/* Nota finale */}
-      <div className="text-center text-xs text-gray-400 mt-10">
-        Dashboard Eticaimprese © 2025 - Tutti i diritti riservati
-      </div>
-
-      {/* Pulsanti */}
       <div
         id="buttonsContainer"
         className="flex justify-center space-x-6 mt-10"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section7: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,39 +19,39 @@ const Section7: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "L’azienda investe in ricerca e sviluppo orientata alla sostenibilità e al bene comune?",
-      note: "Innovare eticamente significa non solo creare nuovi prodotti, ma migliorare l’impatto ambientale, sociale e umano delle soluzioni proposte.",
+        "L’azienda integra l’etica come leva strategica nei processi di innovazione e trasformazione?",
+      note: "La domanda valuta quanto l’impresa considera i valori etici come motore dell’innovazione, anche in ambito digitale o tecnologico.",
       verifiche:
-        "Presenza di budget dedicato alla R&S etica, progetti documentati e finalizzati a impatti positivi.",
+        "Verificare se i progetti innovativi sono guidati da finalità etiche, inclusione, sostenibilità o impatto positivo.",
       indicatori:
-        "Almeno un progetto di innovazione legato a sostenibilità ambientale, impatto sociale o benessere collettivo.",
+        "Progetti a impatto sociale/ambientale, use case in cui l’etica guida le scelte tecnologiche o digitali.",
     },
     {
       id: "q2",
       domanda:
-        "L’azienda adotta un uso responsabile delle tecnologie (AI, blockchain, IoT…)?",
-      note: "Non basta usare le tecnologie emergenti, serve farlo con responsabilità e secondo principi etici chiari.",
+        "L’azienda coltiva una visione generativa che va oltre il profitto immediato?",
+      note: "Questa domanda analizza se l’impresa persegue obiettivi ispirati a senso, impatto e costruzione di valore duraturo.",
       verifiche:
-        "Presenza di policy etiche sull’uso delle tecnologie, formazione dedicata, principi pubblici condivisi.",
+        "Verificare esistenza di dichiarazioni valoriali a lungo termine, reinvestimenti strategici in progetti sostenibili.",
       indicatori:
-        "Codice etico per l’uso delle tecnologie; percorsi formativi o documenti di riferimento ufficiali.",
+        "Percentuale reinvestita, programmi di impatto, partnership generative, filosofia open innovation.",
     },
     {
       id: "q3",
       domanda:
-        "L’azienda promuove processi di co-progettazione e ascolto per l’innovazione?",
-      note: "La vera innovazione nasce dall’ascolto e dalla partecipazione attiva di tutte le componenti aziendali e degli stakeholder.",
+        "L’impresa promuove forme di collaborazione etica con start-up, enti di ricerca o istituzioni?",
+      note: "Questa domanda riguarda la costruzione di ecosistemi etici per accelerare il cambiamento positivo.",
       verifiche:
-        "Presenza di processi partecipativi documentati: workshop, tavoli trasversali, questionari.",
+        "Verificare la partecipazione a reti di innovazione sostenibile, co-progettazione, bandi etici, living lab.",
       indicatori:
-        "Esempi documentati di co-design e co-decisione; tracciabilità degli output.",
+        "Progetti con Università/CSR Lab/start-up B Corp, presenza in hub etici o filiere sostenibili.",
     },
   ];
 
@@ -76,11 +76,12 @@ const Section7: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -88,12 +89,36 @@ const Section7: React.FC<SectionProps> = ({ onComplete }) => {
         className="text-3xl font-extrabold mb-6 text-center"
         style={{ color: "#b69624" }}
       >
-        Sezione 7 – Innovazione e visione etica
+        Sezione 7 – Innovazione e Visione Etica
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Analizzare la capacità dell’impresa di orientare il proprio sviluppo
+          futuro secondo criteri etici, sostenibili e generativi.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Innovazione ed etica non sono in contraddizione: questa sezione aiuta
+          a valutare come l’azienda possa guidare il cambiamento mantenendo fede
+          ai propri valori.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

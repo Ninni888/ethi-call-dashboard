@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section2: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,39 +19,39 @@ const Section2: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "L’azienda ha una politica aziendale formale sui diritti umani e la responsabilità sociale?",
-      note: "La presenza di una policy scritta e formalmente adottata dimostra l’impegno dell’azienda per il rispetto dei diritti umani.",
+        "L’azienda si impegna attivamente per garantire il rispetto dei diritti umani lungo tutta la catena del valore?",
+      note: "La domanda valuta se l’azienda applica i principi fondamentali dei diritti umani, inclusi quelli dei lavoratori, dei fornitori e delle comunità impattate.",
       verifiche:
-        "Verificare se esiste una policy scritta e pubblicata sui diritti umani e la responsabilità sociale.",
+        "Verificare se l’impresa ha aderito a codici internazionali (es. Global Compact) o ha adottato policy interne per i diritti umani.",
       indicatori:
-        "Documento ufficiale consultabile che espliciti in modo chiaro gli impegni aziendali.",
+        "Presenza di un codice di condotta fornitori, politiche di due diligence, audit sociali, formazione su diritti umani.",
     },
     {
       id: "q2",
       domanda:
-        "Esiste una figura o struttura responsabile per il rispetto dei diritti umani?",
-      note: "Senza un responsabile o un'unità dedicata, anche le policy rischiano di rimanere lettera morta.",
+        "Esistono misure specifiche contro ogni forma di discriminazione, abuso o violazione della dignità personale e professionale?",
+      note: "La domanda esplora le politiche adottate per garantire pari opportunità, inclusività e rispetto in ogni ambito aziendale.",
       verifiche:
-        "Verificare se esiste una nomina formale di una figura interna o funzione aziendale.",
+        "Verificare se esistono canali per segnalazioni anonime, codici di comportamento interni, protocolli antidiscriminazione.",
       indicatori:
-        "Atto di nomina o indicazione ufficiale della responsabilità interna.",
+        "Presenza di policy DEI (Diversità, Equità e Inclusione), adesione a standard esterni, iniziative per la parità.",
     },
     {
       id: "q3",
       domanda:
-        "L’azienda ha un sistema per identificare gli stakeholder a rischio e le situazioni sensibili?",
-      note: "Questa domanda valuta se l’azienda ha identificato le aree di rischio etico all’interno della sua filiera e nei territori in cui opera.",
+        "L’impresa comunica in modo trasparente il proprio impegno in materia di diritti universali?",
+      note: "La domanda intende verificare la chiarezza, accessibilità e coerenza delle dichiarazioni aziendali sui diritti fondamentali.",
       verifiche:
-        "Verificare se l’azienda ha effettuato una mappatura degli stakeholder e delle aree sensibili.",
+        "Verificare la presenza di report, sezioni dedicate nel sito web, campagne di sensibilizzazione interna ed esterna.",
       indicatori:
-        "Esistenza di una stakeholder map ufficiale, eventualmente aggiornata periodicamente.",
+        "Pubblicazione di bilanci sociali, ESG report, comunicazioni CSR, adesione a iniziative internazionali.",
     },
   ];
 
@@ -76,11 +76,12 @@ const Section2: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -88,12 +89,37 @@ const Section2: React.FC<SectionProps> = ({ onComplete }) => {
         className="text-3xl font-extrabold mb-6 text-center"
         style={{ color: "#b69624" }}
       >
-        Sezione 2 – Diritti universali
+        Sezione 2 – Diritti Universali
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Esplorare l’impegno dell’azienda nel garantire il rispetto dei diritti
+          umani fondamentali e promuovere inclusione, equità e non
+          discriminazione.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Le risposte non saranno utilizzate per fini certificativi, ma per
+          comprendere i potenziali rischi e le aree di miglioramento nel
+          rispetto dei diritti universali lungo tutta la catena di valore.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

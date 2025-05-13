@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section5: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,38 +19,39 @@ const Section5: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes);
   };
 
   const questions = [
     {
       id: "q1",
       domanda:
-        "L’azienda promuove un senso di appartenenza costruito su valori condivisi (“famiglia scelta”)?",
-      note: "Il concetto di 'famiglia scelta' si riferisce a un legame profondo costruito su valori comuni, non solo su relazioni formali.",
+        "L’azienda ha definito una visione strategica di lungo periodo ispirata a principi etici?",
+      note: "Questa domanda esplora la capacità dell’impresa di progettare il proprio futuro con coerenza valoriale e orientamento intergenerazionale.",
       verifiche:
-        "Presenza di iniziative che rafforzano la coesione, il senso di comunità e la visione comune.",
+        "Verificare se esistono documenti strategici o dichiarazioni d’intento orientate al bene comune e alla sostenibilità generazionale.",
       indicatori:
-        "Eventi aziendali simbolici, reti di coinvolgimento interno, comunicazione trasversale.",
+        "Presenza di una mission orientata al futuro, riferimenti valoriali in piani industriali, adesione a obiettivi di sviluppo sostenibile.",
     },
     {
       id: "q2",
       domanda:
-        "Esistono processi per garantire una transizione generazionale etica e sostenibile?",
-      note: "La continuità non è solo successione legale ma trasmissione di visione, saperi e valori.",
+        "Esistono forme di valorizzazione della comunità aziendale come 'famiglia scelta'?",
+      note: "Si intende la costruzione di legami fiduciari e identitari tra persone che condividono una cultura, oltre il vincolo contrattuale.",
       verifiche:
-        "Presenza di piani di successione e percorsi strutturati per il passaggio generazionale.",
+        "Verificare se esistono momenti collettivi ricorrenti, spazi di confronto, ritualità aziendali, riconoscimenti basati su valori comuni.",
       indicatori:
-        "Documento strategico sul passaggio generazionale, testimonianze documentate, percorsi interni di crescita.",
+        "Eventi interni, cerimonie simboliche, benefit condivisi, ambienti che stimolano appartenenza e coesione.",
     },
     {
       id: "q3",
-      domanda: "La leadership è diffusa, inclusiva, orientata al bene comune?",
-      note: "ETHI-Call promuove modelli di leadership partecipativa, corresponsabile e orientata all’ascolto.",
+      domanda:
+        "L’impresa considera i propri stakeholder parte integrante del proprio sistema valoriale?",
+      note: "Questa domanda riguarda la capacità di costruire relazioni basate su rispetto e co-responsabilità, non solo su logiche transazionali.",
       verifiche:
-        "Struttura organizzativa non gerarchica; spazi per il confronto e la co-decisione.",
+        "Verificare presenza di forme di ascolto e coinvolgimento regolare di fornitori, clienti, comunità esterne.",
       indicatori:
-        "Presenza di leadership distribuita, sistemi di feedback, iniziative condivise.",
+        "Codici di condotta estesi, forum con stakeholder, collaborazioni valoriali di lungo periodo.",
     },
   ];
 
@@ -75,11 +76,12 @@ const Section5: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -90,9 +92,34 @@ const Section5: React.FC<SectionProps> = ({ onComplete }) => {
         Sezione 5 – Continuità Etica e Famiglia Scelta
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Valutare la capacità dell’impresa di costruire continuità nel tempo
+          attraverso una visione etica condivisa, inclusiva e
+          intergenerazionale.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Le risposte raccolte permettono di identificare il livello di coesione
+          interna, l’integrazione degli stakeholder nel progetto valoriale e la
+          profondità della visione etica aziendale.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

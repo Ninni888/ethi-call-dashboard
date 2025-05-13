@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 interface SectionProps {
-  onComplete: (score: number) => void;
+  onComplete: (score: number, note: string) => void;
 }
 
 const Section1: React.FC<SectionProps> = ({ onComplete }) => {
@@ -19,7 +19,7 @@ const Section1: React.FC<SectionProps> = ({ onComplete }) => {
     const total = Object.values(answers).reduce((sum, val) => sum + val, 0);
     const average = total / Object.keys(answers).length || 0;
     const score = Math.round(average * 10) / 10;
-    onComplete(score);
+    onComplete(score, notes); // ✅ passa anche le note
   };
 
   const questions = [
@@ -76,11 +76,12 @@ const Section1: React.FC<SectionProps> = ({ onComplete }) => {
         boxSizing: "border-box",
       }}
     >
+      {/* Logo */}
       <div className="flex justify-center mb-2">
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "234px", marginBottom: "10px" }}
+          style={{ width: "300px", marginBottom: "10px" }}
         />
       </div>
 
@@ -91,9 +92,37 @@ const Section1: React.FC<SectionProps> = ({ onComplete }) => {
         Sezione 1 – Responsabilità etica (Governo e Trasparenza)
       </h2>
 
+      <div className="text-md text-gray-800 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md mb-8">
+        <p className="mb-2 font-semibold">🎯 Obiettivo della sezione:</p>
+        <p className="mb-4">
+          Valutare il grado di coerenza tra i principi dichiarati dall’azienda e
+          le sue pratiche di governance, trasparenza e responsabilità. La
+          sezione aiuta a mettere in luce punti di forza e aree di miglioramento
+          nella cultura organizzativa.
+        </p>
+        <p className="text-sm italic text-gray-700">
+          Le informazioni fornite saranno utilizzate esclusivamente per
+          supportare un percorso di consapevolezza strategica. Non si tratta di
+          una certificazione, ma di un’analisi utile a identificare potenziali
+          rischi e opportunità. È importante rispondere con autenticità e
+          attenzione: ogni risposta è un’opportunità per crescere.
+        </p>
+      </div>
+
       <div className="space-y-12">
-        {questions.map((q) => (
-          <div key={q.id} className="border rounded-lg p-6 space-y-4 shadow-sm">
+        {questions.map((q, index) => (
+          <div
+            key={q.id}
+            className="border rounded-xl p-6 space-y-4 shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundColor: index % 2 === 0 ? "#fffef8" : "#ffffff",
+              borderColor: "#b69624",
+              borderWidth: "1px",
+            }}
+          >
+            <h3 className="text-lg font-bold" style={{ color: "#b69624" }}>
+              Domanda {index + 1}
+            </h3>
             <p className="text-xl font-semibold">{q.domanda}</p>
             <p className="text-gray-700 italic">Nota: {q.note}</p>
             <p className="text-gray-700">Verifiche: {q.verifiche}</p>

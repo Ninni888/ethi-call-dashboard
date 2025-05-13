@@ -25,24 +25,31 @@ const CoverPage: React.FC<CoverPageProps> = ({ onStart }) => {
         <img
           src="/eticaimprese.svg"
           alt="EticaImprese Logo"
-          style={{ width: "180px", marginBottom: "10px" }}
+          style={{ width: "400px", marginBottom: "12px" }}
         />
 
-        {/* by ETHI-Call sotto il logo */}
-        <div className="text-sm mb-6" style={{ color: "#b69624" }}>
+        {/* by ETHI-Call */}
+        <div
+          className="text-sm italic mb-6"
+          style={{ color: "#b69624", fontStyle: "italic" }}
+        >
           by <strong>ETHI-Call</strong>
         </div>
 
-        {/* Testo di benvenuto */}
+        {/* Titolo */}
         <h1
           className="text-3xl md:text-4xl font-bold mb-4"
           style={{ color: "#b69624" }}
         >
-          BENVENUTI IN ETICAIMPRESE
+          ETHI-Call Assessment
         </h1>
 
-        <p className="text-lg mb-6" style={{ color: "#b69624" }}>
-          Il primo assessment etico per la tua organizzazione
+        {/* Claim su due righe */}
+        <p className="text-lg mb-8 text-gray-700">
+          Scopri quanto l’etica è integrata nella tua impresa e trasforma i tuoi
+          valori in vantaggio competitivo.
+          <br />
+          Un viaggio tra coerenza, impatto e consapevolezza.
         </p>
 
         {/* Pulsante Inizia */}
@@ -60,7 +67,7 @@ const CoverPage: React.FC<CoverPageProps> = ({ onStart }) => {
             cursor: "pointer",
           }}
         >
-          Inizia
+          Inizia il Percorso Etico
         </button>
       </div>
     </div>
