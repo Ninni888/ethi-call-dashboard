@@ -9,7 +9,7 @@ const sections = [
   "Impatti Etici",
   "Cultura Etica",
   "Resilienza Etica",
-];
+] as const;
 
 const questions = {
   "Visione Etica": [
@@ -69,11 +69,13 @@ const questions = {
     { id: "q14", label: "Policy etiche in crisi?", type: "yesno" },
     { id: "q15", label: "Numero procedure aggiornate?", type: "number" },
   ],
-};
+} as const;
 
-const initialAnswers = Object.entries(questions).reduce(
-  (acc, [section, list]) => {
-    list.forEach((q) => {
+type SectionKey = keyof typeof questions;
+
+const initialAnswers = (Object.keys(questions) as SectionKey[]).reduce(
+  (acc, section) => {
+    questions[section].forEach((q) => {
       acc[q.id] = "";
     });
     return acc;
